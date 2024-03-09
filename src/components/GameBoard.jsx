@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
 const initialGameBoard = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
-export default function GameBoard() {
+export default function GameBoard({ onSelectSquere, activePlayerSymbol }) {
+  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+  function handleSelectSquere(rowIndex, colIndex) {
+    setGameBoard((prevGameBoard) => {
+      const updateBoard = [
+        ...prevGameBoard.map((innerArray) => [...innerArray]),
+      ];
+      updateBoard[rowIndex][colIndex] = activePlayerSymbol;
+      return updateBoard;
+    });
+    onSelectSquere();
+  }
+
   return (
     <ol id="game-board">
-      {initialGameBoard.map((row, rowIndex) => (
+      {gameBoard.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button>{playerSymbol}</button>
+                <button onClick={() => handleSelectSquere(rowIndex, colIndex)}>
+                  {playerSymbol}
+                </button>
               </li>
             ))}
           </ol>
