@@ -41,7 +41,7 @@ function App() {
         </ol>
         <GameBoard onSelectSquere={handleSelectSquere} turns={gameTurns} />
       </div>
-      <Log />
+      <Log turns={gameTurns} />
     </main>
   );
 }
