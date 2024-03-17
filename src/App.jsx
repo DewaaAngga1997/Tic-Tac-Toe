@@ -20,6 +20,10 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
 }
 function App() {
+  const [players, setPlayers] = useState({
+    X: "Player 1",
+    O: "Player 2",
+  });
   const [gameTurns, setGameTurns] = useState([]);
   // const [hasWinner, setHasWinner] = useState(false);
   // const [activePlayer, setActivePlayer] = useState("X");
@@ -35,7 +39,7 @@ function App() {
     gameBoard[row][col] = player;
   }
 
-  let winner = null;
+  let winner;
 
   for (const combination of WINNING_COMBINATIONS) {
     const firstSquareSymbol =
@@ -50,7 +54,7 @@ function App() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = players[firstSquareSymbol];
     }
   }
 
@@ -73,6 +77,16 @@ function App() {
   function hendleRestart() {
     setGameTurns([]);
   }
+
+  function hendlePlayerNameChange(symbol, newwName) {
+    setPlayers((prevPlayers) => {
+      return {
+        ...prevPlayers,
+        [symbol]: newwName,
+      };
+    });
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -81,11 +95,13 @@ function App() {
             initialName="Player 1"
             symbol=" X "
             isActive={activePlayer === "X"}
+            onChangeName={hendlePlayerNameChange}
           />
           <Player
             initialName="Player 2"
             symbol=" O "
             isActive={activePlayer === "O"}
+            onChangeName={hendlePlayerNameChange}
           />
         </ol>
         {(winner || hasDraw) && (
